@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<HEAD>
+<Title>Visual Novel Test</Title>
+<link rel="stylesheet" type="text/css" href="css/StyleSheet.css">
+<script type="text/javascript" src="jsp\Library.js"></script>
+<script type="text/javascript" src="jsp\PlayNovel.js"></script>
+</HEAD>
+<BODY>
+<script>
+let Step=0;
+let curStep = -1;
+let NextStep = 1;
+
+//Mode
+let NextLock = false;
+let LoopMode = false;
+
+const MAX_STEP = 5;
+
+let Scan=setInterval(function(){
+
+	curStep = ExcuteNovel(Step, curStep);
+
+}, 100);
+
+function Next()
+{
+	if(NextLock == true) return;
+
+	Step = NextStep;
+	NextStep++;
+	if(Step >= MAX_STEP)
+	{
+		if(LoopMode == true)
+		{
+			Step=0;NextStep=1;
+		}
+	}
+}
+
+function EventSelect(_id)
+{
+	if(Step==1)
+	{
+		if(_id=='s1')
+		{
+			Step=2;
+		}
+		else if(_id=='s2')
+		{
+			Step=3;
+		}
+		NextStep=4;
+		NextLock=false;
+		SelectBoxEnd();
+	}
+}
+
+window.addEventListener("keypress", (e) => {
+	const key = e.key;
+/*
+	if(key =='q')
+	{
+		SelectBoxCall();
+	}
+	else if(key == 'w')
+	{
+		SelectBoxEnd();
+	}
+	else
+	{Next();}
+*/
+Next();
+});
+</script>
+<div id="MainScreen">
+
+	<div id="stage" onclick="Next()">
+		<image src="img/stage/spotlight.png" style="width:100%">
+		<image id="char01" src="img/char/maki.png" style="position:absolute;top:50px;left:220px;width:200px;visibility:hidden;" onclick="">
+	</div>
+
+	<div id="Message">
+		<div id="TalkBox" style="position:absolute;margin:10px">
+		</div>
+	</div>
+
+	<div id="SelectBox">
+		<div id="s1" class="select" onclick="EventSelect(this.id)">선택지1</div>
+		<div id="s2" class="select" onclick="EventSelect(this.id)">선택지2</div>
+		<div id="s3" class="select" onclick="EventSelect(this.id)">선택지3</div>
+		<div id="s4" class="select" onclick="EventSelect(this.id)">선택지4</div>
+	</div>
+
+</div>
+</BODY>
+</HTML>
